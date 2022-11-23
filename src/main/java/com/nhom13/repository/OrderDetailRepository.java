@@ -35,6 +35,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
 
 	@Modifying	
 	@Query(value = "UPDATE order_detail addCart set addCart.quantity= :quantity, addCart.total= :total WHERE addCart.id_order=:id_order", nativeQuery = true)
-	void updateQtyByCartId(@Param("id_cart")long id_cart, @Param("total")long total, @Param("quantity")long quantity);
+	void updateQtyByCartId(@Param("id_order")long id_order, @Param("total")long total, @Param("quantity")long quantity);
 
 }

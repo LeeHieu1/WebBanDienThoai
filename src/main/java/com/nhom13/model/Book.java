@@ -22,25 +22,30 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Entity(name = "Book")
 @Table(name = "book")
-public class Book extends BaseModel{
+public class Book extends BaseModel {
 	@NotBlank
 	private String name;
-	
+
 	@NotNull
 	private Long price;
-	
+
+	// Ref to User
+	@ManyToOne
+	@JoinColumn(name = "author")
+	private User user;
+
 	@NotBlank
 	private String authorname;
-	
+
 	@Lob
 	@Column(length = 65535)
 	@NotBlank
 	private String description;
-	
-	@ManyToOne (fetch = FetchType.LAZY)
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_category")
 	private Category category;
-	
+
 	@OneToMany(mappedBy = "book")
 	private List<OrderDetail> orderDetails;
 

@@ -13,5 +13,5 @@ public class OrderDetailDTO extends BaseDTO {
 	protected Long quantity;
 	protected Long total;
 	protected Long id_book;
-
+	protected BookDTO book;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.nhom13.dto.BookDTO;
 import com.nhom13.dto.OrderDetailDTO;
@@ -13,6 +14,7 @@ import com.nhom13.model.OrderDetail;
 import com.nhom13.repository.OrderDetailRepository;
 import com.nhom13.service.impl.IOrderDetailService;
 
+@Service
 public class OrderDetailService implements IOrderDetailService{
 	@Autowired
 	ModelMapper modelMapper;
@@ -30,7 +32,7 @@ public class OrderDetailService implements IOrderDetailService{
 			obj.setId_book(id_book);
 			obj.setQuantity(quantity);
 			obj.setTotal(total);
-			orderDetailRepo.save(obj);
+			//orderDetailRepo.save(obj);
 			return this.getCartByUserId(id_user);
 		}catch(Exception e){
 			throw new Exception(e.getMessage());

@@ -1,5 +1,6 @@
 package com.nhom13.payload.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

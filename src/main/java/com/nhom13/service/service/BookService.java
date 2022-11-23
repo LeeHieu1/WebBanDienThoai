@@ -12,9 +12,12 @@ import com.nhom13.dto.BookDTO;
 import com.nhom13.model.Book;
 import com.nhom13.model.Category;
 import com.nhom13.payload.response.DataResponse;
+import com.nhom13.payload.response.ListWithPagingResponse;
 import com.nhom13.repository.BookRepository;
 import com.nhom13.repository.CategoryRepository;
 import com.nhom13.service.impl.IBookService;
+import com.nhom13.utility.Page;
+import com.nhom13.utility.sort.ModelSorting;
 
 import antlr.TokenWithIndex;
 
@@ -28,12 +31,14 @@ public class BookService implements IBookService {
 	@Autowired
 	CategoryRepository categoryRepository;
 
+	@Autowired
+
 	@Override
 	public List<BookDTO> getListBook() {
 		List<Book> books = bookRepo.findAll();
-		List<BookDTO> listBooks = new ArrayList<>(); 
-		for(Book book : books){
-			
+		List<BookDTO> listBooks = new ArrayList<>();
+		for (Book book : books) {
+
 			listBooks.add(modelMapper.map(book, BookDTO.class));
 		}
 		return listBooks;
@@ -72,6 +77,14 @@ public class BookService implements IBookService {
 		response.setMessage("Update success");
 		return response;
 	}
-	
-	
+
+	public ListWithPagingResponse<BookDTO> searchBook(String name, String authorName, Long category, Long minPrice,
+			Long maxPrice,
+			Integer page, Integer limit, Integer sortBy, Boolean sortDescending) {
+		Long count = bookRepo.getCountSearchBook(name, authorName, category, minPrice, maxPrice);
+		Page paging = new Page(page, limit, count.intValue(), ModelSorting.getProductSort(sortBy, sortDescending));
+		List<Book> books = bookRepo.getSearchBook(name, authorName, category, minPrice, maxPrice, paging);
+		List<BookDTO> lstBooks = books.stream().map(book -> modelMapper.map(book, BookDTO.class)).toList();
+		return new ListWithPagingResponse<>(paging.getPageNumber() + 1, paging.getTotalPage(), lstBooks);
+	}
 }

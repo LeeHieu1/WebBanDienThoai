@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,27 +29,42 @@ public class BookController {
 	private IBookService bookService;
 	@Autowired
 	private BookRepository bookRepo;
-	
+
 	@GetMapping("/book")
-	public ResponseEntity<?> getListBook(){
-		
+	public ResponseEntity<?> getListBook() {
+
 		return ResponseEntity.ok(bookService.getListBook());
 	}
-	
+
 	@GetMapping("/book/{id}")
-	public ResponseEntity<?> getBookByID(@PathVariable long id){
+	public ResponseEntity<?> getBookByID(@PathVariable long id) {
 		BookDTO result = bookService.getBookByID(id);
 		return ResponseEntity.ok(result);
 	}
-	
+
 	@PostMapping("/admin/insert_book")
-	public ResponseEntity<?> insert(@RequestBody BookDTO request){
+	public ResponseEntity<?> insert(@RequestBody BookDTO request) {
 		return ResponseEntity.ok(bookService.insert(request));
 	}
-	
+
 	@PutMapping("/admin/update_book/{id}")
-	public ResponseEntity<?> update(@RequestBody BookDTO request,@PathVariable Long id){
+	public ResponseEntity<?> update(@RequestBody BookDTO request, @PathVariable Long id) {
 		return ResponseEntity.ok(bookService.update(request, id));
+	}
+
+	@GetMapping("book/search")
+	public ResponseEntity<?> getSeach(
+			@RequestParam(value = "page", required = true) Integer page,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "authorName", required = false) String authorName,
+			@RequestParam(value = "category", required = false) Long category,
+			@RequestParam(value = "maxPrice", required = false) Long maxPrice,
+			@RequestParam(value = "minPrice", required = false) Long minPrice,
+			@RequestParam(required = false) Integer sortBy, @RequestParam(required = false) Boolean sortDescending) {
+		return ResponseEntity
+				.ok(bookService.searchBook(name, authorName, category, minPrice, maxPrice, page, limit, sortBy,
+						sortDescending));
 	}
 
 }

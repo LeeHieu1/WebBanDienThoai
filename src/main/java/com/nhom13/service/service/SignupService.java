@@ -110,7 +110,7 @@ public class SignupService implements ISignupService{
 	public void sendVerificationEmail(UserDTO user, String siteURL) throws UnsupportedEncodingException, MessagingException {
 		String subject = "Please verify your registration";
 		String senderName = "Website Book";
-		String verifyURL = siteURL + "/verify?code=" + user.getVerificationCode();
+		String verifyURL = siteURL + "/api/verify?code=" + user.getVerificationCode();
 		String mailContent = "<p>Dear " + user.getName() + ",</p>";
 		
 		mailContent += "<p>Please click the link below to verify your registration</p>";

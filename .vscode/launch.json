@@ -1,0 +1,15 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-BookApplication<website-book>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.nhom13.BookApplication",
+            "projectName": "website-book",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": "-Dfile.encoding=utf8"
+        }
+    ]
+}
