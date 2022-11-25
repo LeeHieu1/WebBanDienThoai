@@ -9,6 +9,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Book.class)
 public abstract class Book_ extends com.nhom13.model.BaseModel_ {
 
+	public static volatile SingularAttribute<Book, String> image;
 	public static volatile ListAttribute<Book, OrderDetail> orderDetails;
 	public static volatile SingularAttribute<Book, Long> price;
 	public static volatile SingularAttribute<Book, String> name;
@@ -17,6 +18,7 @@ public abstract class Book_ extends com.nhom13.model.BaseModel_ {
 	public static volatile SingularAttribute<Book, Category> category;
 	public static volatile SingularAttribute<Book, User> user;
 
+	public static final String IMAGE = "image";
 	public static final String ORDER_DETAILS = "orderDetails";
 	public static final String PRICE = "price";
 	public static final String NAME = "name";

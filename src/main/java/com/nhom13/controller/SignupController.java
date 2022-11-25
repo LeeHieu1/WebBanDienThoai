@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ import com.nhom13.payload.response.DataResponse;
 import com.nhom13.security.userprincipal.UserPrincipal;
 import com.nhom13.service.impl.ISignupService;
 import com.nhom13.utility.datatype.Utility;
-
+@CrossOrigin
 @RestController
 @RequestMapping
 public class SignupController {

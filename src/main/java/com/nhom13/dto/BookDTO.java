@@ -12,6 +12,7 @@ public class BookDTO extends BaseDTO {
 	protected String name;
 	protected Long price;
 	protected String authorname;
+	private String image;
 	protected String description;
 	protected Long id_category;
 

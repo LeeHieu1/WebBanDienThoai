@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ import com.nhom13.payload.response.BaseResponse;
 import com.nhom13.repository.OrderDetailRepository;
 import com.nhom13.service.impl.IOrderDetailService;
 import com.nhom13.service.service.OrderDetailService;
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api")
 public class OrderDetailController {
