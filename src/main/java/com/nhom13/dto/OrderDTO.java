@@ -15,6 +15,9 @@ import lombok.Setter;
 
 public class OrderDTO extends BaseDTO {
 	protected Long id_user;
+	protected String name;
+	protected String phone;
+	protected String address;
 	protected Long totalPrice;
 	protected Date date;
 	protected String paymentMethod;

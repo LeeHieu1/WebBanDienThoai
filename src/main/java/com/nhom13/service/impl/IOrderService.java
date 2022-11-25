@@ -9,5 +9,6 @@ public interface IOrderService {
     public BaseResponse orderBooks(OrderRequest request,Long userId);
 
     public ListResponse<OrderDTO> getOrders(Long userId);
+    public OrderDTO getOrders(Long userId, Long orderId);
 
 }

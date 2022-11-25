@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,11 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<?> getOrders(@AuthenticationPrincipal UserPrincipal user) {
         return ResponseEntity.ok(orderService.getOrders(user.getId()));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<?> getOrders(@AuthenticationPrincipal UserPrincipal user, @PathVariable("id") Long orderId) {
+        return ResponseEntity.ok(orderService.getOrders(user.getId(), orderId));
     }
 
     @PostMapping
