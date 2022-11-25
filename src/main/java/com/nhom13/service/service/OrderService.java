@@ -73,7 +73,7 @@ public class OrderService implements IOrderService {
         order.setStatus(0);
         order.setTotalPrice(total);
         order.setUser(user);
-        
+
         orderRepo.save(order);
 
         // Delete from cart
@@ -92,4 +92,11 @@ public class OrderService implements IOrderService {
         return new ListResponse<>(orders);
     }
 
+    public OrderDTO getOrders(Long userId, Long orderId) {
+
+        OrderDTO order = modelMapper.map(orderRepo.findById(orderId).get(), OrderDTO.class);
+        if (order.getId_user() != userId)
+            throw new CommonRuntimeException("Order not found !");
+        return order;
+    }
 }
