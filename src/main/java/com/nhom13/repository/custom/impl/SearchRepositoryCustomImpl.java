@@ -40,9 +40,9 @@ public class SearchRepositoryCustomImpl implements SearchRepositoryCustom {
         if (minPrice != null) {
             filters.add(cb.greaterThanOrEqualTo(root.get(Book_.price), minPrice));
         }
-        if (authorName != null && !authorName.isBlank()) {
-            filters.add(cb.like(root.get(Book_.authorname), "%" + authorName + "%"));
-        }
+        // if (authorName != null && !authorName.isBlank()) {
+        //     filters.add(cb.like(root.get(Book_.authorname), "%" + authorName + "%"));
+        // }
         if (page != null) {
             cq.orderBy(QueryUtils.toOrders(page.getSort(), root, cb));
         }
@@ -51,7 +51,8 @@ public class SearchRepositoryCustomImpl implements SearchRepositoryCustom {
 
         if (name != null && !name.isBlank()) {
             filter = cb.and(filter, cb.or(cb.like(root.get(Book_.name), "%" + name + "%"),
-                    cb.like(root.get(Book_.description), "%" + name + "%")));
+                    cb.like(root.get(Book_.description), "%" + name + "%"),
+                    cb.like(root.get(Book_.authorname), "%" + name + "%")));
         }
         cq.select(root).where(filter);
 
