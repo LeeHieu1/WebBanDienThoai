@@ -1,5 +1,6 @@
 package com.nhom13.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nhom13.dto.BookDTO;
 import com.nhom13.model.Book;
 import com.nhom13.repository.BookRepository;
 import com.nhom13.service.impl.IBookService;
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 @Controller
 @RequestMapping(value = "/api")
@@ -44,13 +46,27 @@ public class BookController {
 	}
 
 	@PostMapping("/admin/insert_book")
-	public ResponseEntity<?> insert(@RequestBody BookDTO request) {
-		return ResponseEntity.ok(bookService.insert(request));
+	public ResponseEntity<?> insert(@RequestParam String name, @RequestParam String authorname,
+			@RequestParam Long price, @RequestParam String description, @RequestParam Long id_category, @RequestParam MultipartFile img) throws IOException{
+		BookDTO request = new BookDTO();
+		request.setAuthorname(authorname);
+		request.setDescription(description);
+		request.setId_category(id_category);
+		request.setName(name);
+		request.setPrice(price);
+		return ResponseEntity.ok(bookService.insert(request, img));
 	}
-
+	
 	@PutMapping("/admin/update_book/{id}")
-	public ResponseEntity<?> update(@RequestBody BookDTO request, @PathVariable Long id) {
-		return ResponseEntity.ok(bookService.update(request, id));
+	public ResponseEntity<?> update(@PathVariable Long id, @RequestParam String name, @RequestParam String authorname, @RequestParam Long price, 
+			@RequestParam String description, @RequestParam Long id_category, @RequestParam(required = false) MultipartFile img) throws IOException{
+		BookDTO request = new BookDTO();
+		request.setAuthorname(authorname);
+		request.setDescription(description);
+		request.setId_category(id_category);
+		request.setName(name);
+		request.setPrice(price);
+		return ResponseEntity.ok(bookService.update(request, id, img));
 	}
 
 	@GetMapping("book/search")

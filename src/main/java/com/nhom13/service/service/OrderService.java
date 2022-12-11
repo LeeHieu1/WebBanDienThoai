@@ -18,7 +18,10 @@ import com.nhom13.model.PaymentMethod;
 import com.nhom13.model.User;
 import com.nhom13.payload.request.OrderRequest;
 import com.nhom13.payload.response.BaseResponse;
+import com.nhom13.payload.response.BookResponse;
+import com.nhom13.payload.response.DataResponse;
 import com.nhom13.payload.response.ListResponse;
+import com.nhom13.payload.response.OrderResponse;
 import com.nhom13.repository.CartRepository;
 import com.nhom13.repository.OrderDetailRepository;
 import com.nhom13.repository.OrderRepository;
@@ -99,4 +102,125 @@ public class OrderService implements IOrderService {
             throw new CommonRuntimeException("Order not found !");
         return order;
     }
+
+    @Override
+	public DataResponse<OrderResponse> getAllOrders() {
+		DataResponse<OrderResponse> response = new DataResponse<>();
+		List<Order> orders = orderRepo.findAll();
+		if(orders != null) {
+			List<OrderResponse> listOrder = new ArrayList<>();
+			for(Order order : orders) {
+				OrderResponse orderResponse = new OrderResponse();
+				orderResponse.setAddress(order.getAddress());
+				orderResponse.setName(order.getName());
+				orderResponse.setPhone(order.getPhone());
+				orderResponse.setUsername(order.getUser().getUsername());
+				orderResponse.setDate(order.getDate());
+				if(order.getStatus() == 0) {
+					orderResponse.setStatus("Chưa thanh toán");
+				}else if(order.getStatus() == 1){
+					orderResponse.setStatus("Đã thanh toán");
+				}else {
+					orderResponse.setStatus("Chưa xác nhận");
+				}
+				orderResponse.setTotal_price(order.getTotalPrice());
+				orderResponse.setId(order.getId());
+				
+				List<OrderDetail> orDetails = order.getOrderDetails();
+				List<BookResponse> listBook = new ArrayList<>();
+				for(OrderDetail orderDetail: orDetails) {
+					BookResponse book = modelMapper.map(orderDetail.getBook(), BookResponse.class);
+					listBook.add(book);
+				}
+				orderResponse.setBooks(listBook);
+				listOrder.add(orderResponse);
+			}
+			response.setSuccess(true);
+			response.setMessage("Success");
+			response.setDatas(listOrder);
+			
+		}else {
+			response.setSuccess(false);
+			response.setMessage("Order is empty");
+		}
+		return response;
+	}
+
+	@Override
+	public DataResponse<OrderResponse> getOrderById(Long id) {
+		DataResponse<OrderResponse> response = new DataResponse<>();
+		Order order = orderRepo.getById(id);
+		if(order != null) {
+			OrderResponse orderResponse = new OrderResponse();
+			orderResponse.setAddress(order.getAddress());
+			orderResponse.setName(order.getName());
+			orderResponse.setPhone(order.getPhone());
+			orderResponse.setUsername(order.getUser().getUsername());
+			orderResponse.setDate(order.getDate());
+			if(order.getStatus() == 0) {
+				orderResponse.setStatus("Chưa thanh toán");
+			}else {
+				orderResponse.setStatus("Đã thanh toán");
+			}
+			orderResponse.setTotal_price(order.getTotalPrice());
+			orderResponse.setId(order.getId());
+			List<OrderDetail> orDetails = order.getOrderDetails();
+			List<BookResponse> listBook = new ArrayList<>();
+			for(OrderDetail orderDetail: orDetails) {
+				BookResponse book = modelMapper.map(orderDetail.getBook(), BookResponse.class);
+				book.setQuantity(orderDetail.getQuantity());
+				listBook.add(book);
+			}
+			
+			orderResponse.setBooks(listBook);
+			response.setSuccess(true);
+			response.setMessage("Success");
+			response.setData(orderResponse);
+		}
+		return response;
+	}
+
+	@Override
+	public DataResponse<OrderResponse> getOrderByStatus(int status) {
+		DataResponse<OrderResponse> response = new DataResponse<>();
+		List<Order> orders = orderRepo.getOrdersByStatus(status);
+		if(orders.size()!=0) {
+			List<OrderResponse> listOrder = new ArrayList<>();
+			for(Order order : orders) {
+				OrderResponse orderResponse = new OrderResponse();
+				orderResponse.setAddress(order.getAddress());
+				orderResponse.setName(order.getName());
+				orderResponse.setPhone(order.getPhone());
+				orderResponse.setUsername(order.getUser().getUsername());
+				orderResponse.setDate(order.getDate());
+				if(order.getStatus() == 0) {
+					orderResponse.setStatus("Chưa thanh toán");
+				}else if(order.getStatus() == 1){
+					orderResponse.setStatus("Đã thanh toán");
+				}else {
+					orderResponse.setStatus("Chưa xác nhận");
+				}
+				orderResponse.setTotal_price(order.getTotalPrice());
+				orderResponse.setId(order.getId());
+				
+				List<OrderDetail> orDetails = order.getOrderDetails();
+				List<BookResponse> listBook = new ArrayList<>();
+				for(OrderDetail orderDetail: orDetails) {
+					BookResponse book = modelMapper.map(orderDetail.getBook(), BookResponse.class);
+					listBook.add(book);
+				}
+				orderResponse.setBooks(listBook);
+				listOrder.add(orderResponse);
+			}
+			response.setSuccess(true);
+			response.setMessage("Success");
+			response.setDatas(listOrder);
+			
+		}else {
+			response.setSuccess(false);
+			response.setMessage("Order is empty");
+		}
+		return response;
+	}
+
 }

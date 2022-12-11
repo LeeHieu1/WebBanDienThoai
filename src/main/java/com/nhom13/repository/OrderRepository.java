@@ -14,4 +14,7 @@ import com.nhom13.model.User;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByUser(User user);
+    
+    @Query(value = "SELECT * FROM orders where status = :status", nativeQuery = true)
+	public List<Order> getOrdersByStatus(@Param("status") int status);
 }

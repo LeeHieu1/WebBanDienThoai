@@ -1,5 +1,10 @@
 package com.nhom13.service.service;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nhom13.dto.BookDTO;
 import com.nhom13.model.Book;
@@ -21,6 +27,7 @@ import com.nhom13.utility.Page;
 import com.nhom13.utility.sort.ModelSorting;
 
 import antlr.TokenWithIndex;
+import net.bytebuddy.utility.RandomString;
 
 @Service
 @Component
@@ -32,7 +39,7 @@ public class BookService implements IBookService {
 	@Autowired
 	CategoryRepository categoryRepository;
 
-	@Autowired
+	private static final Path CURRENT_FOLDER = Paths.get(System.getProperty("user.dir"));
 
 	@Override
 	public List<BookDTO> getListBook() {
@@ -53,31 +60,73 @@ public class BookService implements IBookService {
 	}
 
 	@Override
-	public DataResponse<?> insert(BookDTO request) {
+	public DataResponse<?> insert(BookDTO request, MultipartFile image) throws IOException{
 		DataResponse<?> response = new DataResponse<>();
-		Category category = categoryRepository.findById(request.getId_category()).orElseThrow();
+		Path staticPath = Paths.get("static");
+        Path imagePath = Paths.get("images");
+        if (!Files.exists(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath))) {
+            Files.createDirectories(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath));
+        }
+        String code = RandomString.make(10);
+        Path file = CURRENT_FOLDER.resolve(staticPath)
+                .resolve(imagePath).resolve(code + image.getOriginalFilename());
+        try (OutputStream os = Files.newOutputStream(file)) {
+            os.write(image.getBytes());
+        }
 		Book book = modelMapper.map(request, Book.class);
+		Category category = categoryRepository.getById(request.getId_category());
 		book.setCategory(category);
+		book.setImage(code + image.getOriginalFilename());
 		bookRepo.save(book);
 		response.setSuccess(true);
-		response.setMessage("Insert success");
+		response.setMessage("Create successful product");
 		return response;
 	}
 
 	@Override
-	public DataResponse<?> update(BookDTO request, Long id) {
+	public DataResponse<?> update(BookDTO request, Long id, MultipartFile image) throws IOException {
 		DataResponse<?> response = new DataResponse<>();
 		Book book = bookRepo.getById(id);
-		book.setName(request.getName());
-		book.setDescription(request.getDescription());
-		book.setAuthorname(request.getAuthorname());
-		book.setPrice(request.getPrice());
+		if(book == null) {
+			response.setSuccess(false);
+			response.setMessage("Book not found");
+			return response;
+		}
+		String imageOld = book.getImage();
+		book = modelMapper.map(request, Book.class);
 		book.setCategory(categoryRepository.getById(request.getId_category()));
+		book.setId(id);
+		book.setImage(imageOld);
+		if(image != null) {
+			Path staticPath = Paths.get("static");
+	        Path imagePath = Paths.get("images");
+	        if (!Files.exists(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath))) {
+	            Files.createDirectories(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath));
+	        }
+	        
+	        String code = RandomString.make(10);
+	        Path file = CURRENT_FOLDER.resolve(staticPath)
+	                .resolve(imagePath).resolve(code + image.getOriginalFilename());
+	        if(imageOld != null) {
+	        	Path fileOldPath = CURRENT_FOLDER.resolve(staticPath)
+		                .resolve(imagePath).resolve(imageOld);
+		        if(fileOldPath!=null) {
+		        	Files.delete(fileOldPath);
+		        }
+	        }
+	        
+	        try (OutputStream os = Files.newOutputStream(file)) {
+	            os.write(image.getBytes());
+	        }
+	        book.setImage(code + image.getOriginalFilename());
+		}
+		
 		bookRepo.save(book);
 		response.setSuccess(true);
-		response.setMessage("Update success");
+		response.setMessage("Update successfull");
 		return response;
 	}
+
 
 	public ListWithPagingResponse<BookDTO> searchBook(String name, String authorName, Long category, Long minPrice,
 			Long maxPrice,

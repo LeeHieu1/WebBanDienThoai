@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nhom13.service.impl.IAccountService;
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @Controller
 @RequestMapping("/api")
 public class AccountController {

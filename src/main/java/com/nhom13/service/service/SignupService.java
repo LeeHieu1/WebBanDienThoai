@@ -166,15 +166,15 @@ public class SignupService implements ISignupService{
 		
 	}
 	
-	public void sendMailToChangePassword(String email, String resetPasswordLink) throws UnsupportedEncodingException, MessagingException {
-		String subject = "Here's link ";
+	public void sendMailToChangePassword(String email, String newPassword) throws UnsupportedEncodingException, MessagingException {
+		String subject = "RESET YOUR PASSWORD";
 		String senderName = "Website Book";
 		
 		String mailContent = "<p>Hello,</p>";
 		mailContent += "<p>You have requested to reset your password.</p>";
-		mailContent += "<p>Click the link below to change your password:</p>";
-		mailContent += "<h3><b><a href=\"" + resetPasswordLink + "\">CHANGE MY PASSWORD</a><b></h3>";
-		mailContent += "<p>Ignore this email if you do remember password, or you have not made the request.</p>";
+		mailContent += "<p>This is your new password:</p>";
+		mailContent += "<h1 style=\"font-family:verdana; background-color: red; display:inline;\">" + newPassword + "</h1>";
+		mailContent += "<p>Thank you<br> Website Book</p>";
 		
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -184,7 +184,7 @@ public class SignupService implements ISignupService{
 		helper.setSubject(subject);
 		helper.setText(mailContent, true);
 		mailSender.send(message);
-	}
+}
 
 	@Override
 	public DataResponse<?> updatePassword(HttpServletRequest request, ResetPasswordRequest password) {

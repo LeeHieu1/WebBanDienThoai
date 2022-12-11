@@ -9,15 +9,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nhom13.payload.request.OrderRequest;
 import com.nhom13.security.userprincipal.UserPrincipal;
 import com.nhom13.service.impl.IOrderService;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("/api")
 public class OrderController {
 
 	@Autowired
@@ -38,4 +39,19 @@ public class OrderController {
 			@RequestBody OrderRequest request) {
 		return ResponseEntity.ok(orderService.orderBooks(request, user.getId()));
 	}
+	@GetMapping("/admin/orders")
+	public ResponseEntity<?> getAllOrder() {
+		return ResponseEntity.ok(orderService.getAllOrders());
+	}
+	
+	@GetMapping("/admin/order/{id}")
+	public ResponseEntity<?> getOrderById(@PathVariable("id") Long id) {
+		return ResponseEntity.ok(orderService.getOrderById(id));
+	}
+	
+	@GetMapping("/admin/order")
+	public ResponseEntity<?> getOrderByStatus(@RequestParam("status") int status) {
+		return ResponseEntity.ok(orderService.getOrderByStatus(status));
+	}
+
 }

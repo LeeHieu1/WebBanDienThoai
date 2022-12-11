@@ -13,20 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nhom13.payload.request.LoginRequest;
 import com.nhom13.service.service.LoginService;
 import com.nhom13.utility.datatype.RolePrefix;
-@CrossOrigin
+
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class LoginController {
 	@Autowired
 	LoginService loginService;
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> loginUser (@Valid @RequestBody LoginRequest request){
-		return ResponseEntity.ok(loginService.authenticateUser(request, RolePrefix.USER));
+		return ResponseEntity.ok(loginService.authenticateUser(request));
 	}
 	
 	@PostMapping("/admin/login")
 	public ResponseEntity<?> loginAdmin (@Valid @RequestBody LoginRequest request){
-		return ResponseEntity.ok(loginService.authenticateUser(request, RolePrefix.ADMIN));
+		return ResponseEntity.ok(loginService.authenticateUser(request));
 	}
 }

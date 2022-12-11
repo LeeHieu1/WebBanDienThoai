@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nhom13.dto.CategoryDTO;
 import com.nhom13.service.impl.ICategoryService;
-@CrossOrigin
+
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*")
 public class CategoryController {
 	@Autowired
 	ICategoryService categoryService;
