@@ -32,17 +32,28 @@ public class BookController {
 	private IBookService bookService;
 	@Autowired
 	private BookRepository bookRepo;
-
+	
 	@GetMapping("/book")
-	public ResponseEntity<?> getListBook() {
+	public ResponseEntity<?> getListBookk() {
 
 		return ResponseEntity.ok(bookService.getListBook());
 	}
 
 	@GetMapping("/book/{id}")
-	public ResponseEntity<?> getBookByID(@PathVariable long id) {
-		BookDTO result = bookService.getBookByID(id);
+	public ResponseEntity<?> getBookkByID(@PathVariable long id) {
+		BookDTO result = bookService.getBookkByID(id);
 		return ResponseEntity.ok(result);
+	}
+
+	@GetMapping("/admin/book")
+	public ResponseEntity<?> getListBook() {
+
+		return ResponseEntity.ok(bookService.getListBook());
+	}
+
+	@GetMapping("/admin/book/{id}")
+	public ResponseEntity<?> getBookByID(@PathVariable long id) {
+		return ResponseEntity.ok(bookService.getBookByID(id));
 	}
 
 	@PostMapping("/admin/insert_book")
