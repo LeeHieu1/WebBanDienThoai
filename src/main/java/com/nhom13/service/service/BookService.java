@@ -12,12 +12,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nhom13.dto.BookDTO;
 import com.nhom13.model.Book;
 import com.nhom13.model.Category;
+import com.nhom13.payload.response.BookResponse;
 import com.nhom13.payload.response.DataResponse;
 import com.nhom13.payload.response.ListWithPagingResponse;
 import com.nhom13.repository.BookRepository;
@@ -40,9 +40,41 @@ public class BookService implements IBookService {
 	CategoryRepository categoryRepository;
 
 	private static final Path CURRENT_FOLDER = Paths.get(System.getProperty("user.dir"));
+	
+	@Override
+	public DataResponse<BookResponse> getListBook() {
+		DataResponse<BookResponse> response = new DataResponse<>();
+		List<Book> books = bookRepo.findAll();
+		List<BookResponse> listBooks = new ArrayList<>(); 
+		for(Book book : books){
+			BookResponse bookresponse = new BookResponse();
+			bookresponse = modelMapper.map(book, BookResponse.class);
+			listBooks.add(bookresponse);
+		}
+		response.setDatas(listBooks);
+		response.setSuccess(true);
+		response.setMessage("Success");
+		return response;
+	}
 
 	@Override
-	public List<BookDTO> getListBook() {
+	public DataResponse<BookResponse> getBookByID(Long id) {
+		DataResponse<BookResponse> response = new DataResponse<>();
+		Book book = bookRepo.getById(id);
+		if(book == null) {
+			response.setSuccess(false);
+			response.setMessage("Book not found");
+			return response;
+		}
+		BookResponse bookRes = modelMapper.map(book, BookResponse.class);
+		response.setSuccess(true);
+		response.setMessage("Ok");
+		response.setData(bookRes);
+		return response;
+	}
+
+	@Override
+	public List<BookDTO> getListBookk() {
 		List<Book> books = bookRepo.findAll();
 		List<BookDTO> listBooks = new ArrayList<>();
 		for (Book book : books) {
@@ -53,12 +85,12 @@ public class BookService implements IBookService {
 	}
 
 	@Override
-	public BookDTO getBookByID(Long id) {
+	public BookDTO getBookkByID(Long id) {
 		Book findBook = bookRepo.findById(id).orElseThrow();
 		BookDTO bookDTO = modelMapper.map(findBook, BookDTO.class);
 		return bookDTO;
 	}
-
+	
 	@Override
 	public DataResponse<?> insert(BookDTO request, MultipartFile image) throws IOException{
 		DataResponse<?> response = new DataResponse<>();
