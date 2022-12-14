@@ -24,17 +24,17 @@ public class OrderController {
 	@Autowired
 	IOrderService orderService;
 
-	@GetMapping("/order")
+	@GetMapping("/user/order")
 	public ResponseEntity<?> getOrders(@AuthenticationPrincipal UserPrincipal user) {
 		return ResponseEntity.ok(orderService.getOrders(user.getId()));
 	}
 
-	@GetMapping("/order/{id}")
+	@GetMapping("/user/order/{id}")
 	public ResponseEntity<?> getOrders(@AuthenticationPrincipal UserPrincipal user, @PathVariable("id") Long orderId) {
 		return ResponseEntity.ok(orderService.getOrders(user.getId(), orderId));
 	}
 
-	@PostMapping("/createOrder")
+	@PostMapping("/user/createOrder")
 	public ResponseEntity<?> createOrders(@AuthenticationPrincipal UserPrincipal user,
 			@RequestBody OrderRequest request) {
 		return ResponseEntity.ok(orderService.orderBooks(request, user.getId()));

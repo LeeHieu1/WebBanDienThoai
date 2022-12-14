@@ -30,7 +30,7 @@ CREATE TABLE `category` (
   `modifieddate` datetime(6) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'admin01','2022-11-22 16:50:16.640000','admin01','2022-11-22 16:50:16.640000','Light Novel'),(2,'admin01','2022-11-22 16:53:26.361000','admin01','2022-11-22 16:53:26.361000','Ngôn Tình'),(3,'admin01',NULL,'admin01',NULL,'Tiểu Thuyết'),(4,'admin01','2022-12-10 15:28:34.031000','admin01','2022-12-10 15:28:34.031000','test thể loại');
+INSERT INTO `category` VALUES (1,'admin01','2022-11-22 16:50:16.640000','admin01','2022-11-22 16:50:16.640000','Samsung'),(2,'admin01','2022-11-22 16:53:26.361000','admin01','2022-11-22 16:53:26.361000','Xiaomi'),(3,'admin01',NULL,'admin01',NULL,'Apple');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-11 22:55:05
+-- Dump completed on 2022-12-14 19:57:13

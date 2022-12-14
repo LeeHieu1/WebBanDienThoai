@@ -35,7 +35,7 @@ CREATE TABLE `user` (
   `verification_code` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_ob8kqyqqgmefl0aco34akdtpe` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin01@gmail.com',_binary '','test','$2a$10$7rxnnxRfFXf1zdjxyqnbV.CvddCAD.d7u/icqAkexVMeIPNBCJwMi','0337445596','ADMIN',_binary '','admin01',NULL),(2,'thebest11447@gmail.com',_binary '','test2','$2a$10$xaTJ3FnH4Z56kObuzm.o8OS5g1TlUwVMt8wJ7tvG9vkCQVuxmD38S','0123456788','ADMIN',_binary '','admin02','5IYsf55XKoxopojJElSrvUbqsk0VREa6yIeAPiDOB9be4HyZjnDaJl9rB7l9LquJ'),(3,'thebest11446@gmail.com',_binary '','Người mua 2','$2a$10$xaTJ3FnH4Z56kObuzm.o8OS5g1TlUwVMt8wJ7tvG9vkCQVuxmD38S','0123456789','USER',_binary '','user02',NULL),(4,'hle38365@gmail.com',_binary '','Hieu','$2a$10$z8l7lAnS5elRX.tKpNDHXOMJtvgsImi3Qvu8TQF3Ub1xDQuwq5uIu','0382751167','USER',_binary '','hieu123','CtQva6jxbqV9sna39VmX9GvqXrMh8WTwJL6wE01uj61k44f22AS3In1YKtO2t2js'),(5,'hle24681012@gmail.com',_binary '','Lê Hiếu','$2a$10$xtAE4CGh.3fwMzSKsKM8au0CPH24yD4diob39GTWjWmIjGe.O1J2i','0123871938','USER',_binary '','hieu13','zayRuG01NUZ2eR9vCK0V5fQJy2vdq93KKOPti0XvivCE1VEMh4xMDAD80dn8eFLk'),(9,'alo@gmail.com',_binary '','abcd','12345678','128727462','USER',_binary '','abcd1',NULL);
+INSERT INTO `user` VALUES (1,'admin01@gmail.com',_binary '','test','$2a$10$7rxnnxRfFXf1zdjxyqnbV.CvddCAD.d7u/icqAkexVMeIPNBCJwMi','0337445596','ADMIN',_binary '','admin01',NULL),(2,'thebest11447@gmail.com',_binary '','test2','$2a$10$xaTJ3FnH4Z56kObuzm.o8OS5g1TlUwVMt8wJ7tvG9vkCQVuxmD38S','0123456788','ADMIN',_binary '','admin02','5IYsf55XKoxopojJElSrvUbqsk0VREa6yIeAPiDOB9be4HyZjnDaJl9rB7l9LquJ'),(3,'thebest11446@gmail.com',_binary '','Người mua 2','$2a$10$xaTJ3FnH4Z56kObuzm.o8OS5g1TlUwVMt8wJ7tvG9vkCQVuxmD38S','0123456789','USER',_binary '','user02',NULL),(4,'hle38365@gmail.com',_binary '','Hieu','$2a$10$v3rvCr/gbCWTL6fMLr3hQOgzAAgZ67NZnKMBUKefctXFjQiuPlzLy','0382751167','USER',_binary '','hieu123','CtQva6jxbqV9sna39VmX9GvqXrMh8WTwJL6wE01uj61k44f22AS3In1YKtO2t2js'),(10,'lehieu130301@gmail.com',_binary '','Le hieu','$2a$10$7u.vRzNUtic/l6fkbim0IOhBBHyT3N7SbjfTZmVbfXsv4iX.oA8jy','0378483724','USER',_binary '','hieu13','HOMksku3NsEL5ivipHGMAwW5Tvr7V1aYSphhBagmc0AGNFkOaWQB1zigF8ESGPUs');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-11 22:55:05
+-- Dump completed on 2022-12-14 19:57:13

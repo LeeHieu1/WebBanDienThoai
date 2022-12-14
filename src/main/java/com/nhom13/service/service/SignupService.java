@@ -73,8 +73,13 @@ public class SignupService implements ISignupService{
 	}
 	
 	@Override
-	public DataResponse<UserDTO> createUser(UserDTO request, HttpServletRequest siteURL) throws UnsupportedEncodingException, MessagingException {
+	public DataResponse<UserDTO> createUser(UserDTO request) throws UnsupportedEncodingException, MessagingException {
 		DataResponse<UserDTO> response = new DataResponse<>();
+		if(request.getPassword().length() < 8 || request.getPassword().length() > 30) {
+			response.setSuccess(false);
+			response.setMessage("Invalid password");
+			return response;
+		}
 		if(request.getUsername() != null && userService.existsByUsername(request.getUsername())) {
 			response.setMessage("The username is existed");
 			response.setSuccess(false);
@@ -91,7 +96,7 @@ public class SignupService implements ISignupService{
 			return response;
 		}
 		
-		String randomCode = RandomString.make(64);
+		String randomCode = RandomString.make(6);
 		
 		User user = new User(request.getName(), request.getUsername(), passwordEncoder.encode(request.getPassword()), request.getPhone(), request.getEmail());
 		user.setEnabled(false);
@@ -103,23 +108,23 @@ public class SignupService implements ISignupService{
 		response.setMessage("Register success");
 		response.setSuccess(true);
 		response.setData(modelMapper.map(user, UserDTO.class));
-		sendVerificationEmail(response.getData(), Utility.getSiteURL(siteURL));
+		sendVerificationEmail(response.getData());
 		return response;
 	}
 	
-	public void sendVerificationEmail(UserDTO user, String siteURL) throws UnsupportedEncodingException, MessagingException {
+	public void sendVerificationEmail(UserDTO user) throws UnsupportedEncodingException, MessagingException{
 		String subject = "Please verify your registration";
-		String senderName = "Website Book";
-		String verifyURL = siteURL + "/api/verify?code=" + user.getVerificationCode();
+		String senderName = "Website Phone";
+//		String verifyURL = siteURL + "/verify?code=" + user.getVerificationCode();
 		String mailContent = "<p>Dear " + user.getName() + ",</p>";
 		
-		mailContent += "<p>Please click the link below to verify your registration</p>";
-		mailContent += "<h3><a href=\"" + verifyURL + "\">VERIFY</a></h3>";
-		mailContent += "<p>Thank you<br> Website Book</p>";
+		mailContent += "<p>This is your active code:</p>";
+		mailContent += "<h1 style=\"font-family:verdana; background-color: red; display:inline;\">" + user.getVerificationCode() + "</h1>";
+		mailContent += "<p>Thank you<br> Website Phone</p>";
 		
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
-		helper.setFrom("tranduythanhmutd1999@gmail.com", senderName);
+		helper.setFrom("hle38365@gmail.com", senderName);
 		helper.setTo(user.getEmail());
 		helper.setSubject(subject);
 		helper.setText(mailContent, true);
@@ -136,7 +141,8 @@ public class SignupService implements ISignupService{
 			response.setMessage("User does not exist or is confirmed");
 		}
 		else {
-			repository.enable(user.getId());
+			user.setEnabled(true);
+			user.setVerificationCode("");
 			repository.save(user);
 			response.setSuccess(true);
 			response.setMessage("Thank you for your email confirmation");
@@ -145,17 +151,17 @@ public class SignupService implements ISignupService{
 	}
 
 	@Override
-	public DataResponse<?> updateResetPasswordCode(String email, HttpServletRequest siteURL) throws UnsupportedEncodingException, MessagingException {
+	public DataResponse<?> updateResetPasswordCode(String email) throws UnsupportedEncodingException, MessagingException {
 		
 		DataResponse<UserDTO> response = new DataResponse<>();
 		User user = repository.findByEmail(email);
 		if(user != null) {
-			String code = RandomString.make(64);
-			user.setVerificationCode(code);
+			String newPassword = RandomString.make(8);
+			user.setPassword(passwordEncoder.encode(newPassword));
 			repository.save(user);
-			String resetPasswordLinkString = Utility.getSiteURL(siteURL) +"/reset_password?code="+code;
-			sendMailToChangePassword(email, resetPasswordLinkString);
-			response.setMessage("We have sent a reset password link to your Email.");
+//			String resetPasswordLinkString = Utility.getSiteURL(siteURL) +"/reset_password?code="+code;
+			sendMailToChangePassword(email, newPassword);
+			response.setMessage("We have sent a new password to your Email.");
 			response.setSuccess(true);
 		}else {
 			response.setMessage("Could not find any user with email: "+ email);
@@ -168,23 +174,23 @@ public class SignupService implements ISignupService{
 	
 	public void sendMailToChangePassword(String email, String newPassword) throws UnsupportedEncodingException, MessagingException {
 		String subject = "RESET YOUR PASSWORD";
-		String senderName = "Website Book";
+		String senderName = "Website Phone";
 		
 		String mailContent = "<p>Hello,</p>";
 		mailContent += "<p>You have requested to reset your password.</p>";
 		mailContent += "<p>This is your new password:</p>";
 		mailContent += "<h1 style=\"font-family:verdana; background-color: red; display:inline;\">" + newPassword + "</h1>";
-		mailContent += "<p>Thank you<br> Website Book</p>";
+		mailContent += "<p>Thank you<br> Website Phone</p>";
 		
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 		
-		helper.setFrom("tranduythanhmutd1999@gmail.com", senderName);
+		helper.setFrom("hle38365@gmail.com", senderName);
 		helper.setTo(email);
 		helper.setSubject(subject);
 		helper.setText(mailContent, true);
 		mailSender.send(message);
-}
+	}
 
 	@Override
 	public DataResponse<?> updatePassword(HttpServletRequest request, ResetPasswordRequest password) {
@@ -232,8 +238,4 @@ public class SignupService implements ISignupService{
 		}
 		return response;
 	}
-	
-	
-
-
 }
